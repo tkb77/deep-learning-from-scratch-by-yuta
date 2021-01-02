@@ -1,6 +1,8 @@
 import sys
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
 sys.path.append("/home/ubuntu/workspace/deep-learning-from-scratch")
 from dataset.mnist import load_mnist
 
@@ -114,3 +116,15 @@ class TwoLayerNet:
         grads['b1'] = np.sum(da1, axis=0)
 
         return grads
+
+
+(x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
+
+train_loss_list = []
+
+# hyper prameter
+iter_num = 10000
+train_size = x_train.shape[0]
+batch_size = 100
+learning_rate = 0.1
+
