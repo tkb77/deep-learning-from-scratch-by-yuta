@@ -48,7 +48,7 @@ def get_date():
 class TwoLayerNet:
 
     def __init__(self, input_size, hidden_size, output_size, weight_init_std=0.01):
-        # 重みの初期化
+        
         self.params = {}
         self.params['W1'] = weight_init_std * np.random.randn(input_size, hidden_size)
         self.params['b1'] = np.zeros(hidden_size)
@@ -66,7 +66,6 @@ class TwoLayerNet:
         
         return y
         
-    # x:入力データ, t:教師データ
     def loss(self, x, t):
         y = self.predict(x)
         
@@ -80,7 +79,6 @@ class TwoLayerNet:
         accuracy = np.sum(y == t) / float(x.shape[0])
         return accuracy
         
-    # x:入力データ, t:教師データ
     def numerical_gradient(self, x, t):
         loss_W = lambda W: self.loss(x, t)
         
@@ -123,8 +121,19 @@ class TwoLayerNet:
 train_loss_list = []
 
 # hyper prameter
-iter_num = 10000
+iters_num = 10000
 train_size = x_train.shape[0]
 batch_size = 100
 learning_rate = 0.1
 
+network =TwoLayerNet(input_size=784, hidden_size=50, output_size=10)
+
+for i in range(iters_num):
+    batch_mask = np.random.choice(train_size, batch_size)
+    x_batch = x_train[batch_mask]
+    t_batch = t_train[batch_mask]
+    
+    grad = network.numerical_gradient(x_batch, t_batch)
+    
+    for key in ('W1', 'b1', 'W2', 'b2'):
+        network.params[key] -= learning_rate * grad[key]
