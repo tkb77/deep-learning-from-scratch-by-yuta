@@ -149,7 +149,7 @@ for i in range(iters_num):
     loss = network.loss(x_batch, t_batch)
     train_loss_list.append(loss)
     
-# show image
+# show loss image
 fig = plt.figure()
 
 plt.plot(train_loss_list)
@@ -157,3 +157,5 @@ plt.xlabel("iter_num")
 plt.ylabel("loss")
 
 fig.savefig("img.png")
+
+#show epoc image
