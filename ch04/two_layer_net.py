@@ -11,9 +11,12 @@ def cross_entropy_error(y, t):
         t = t.reshape(1, t.size)
         y = y.reshape(1, y.size)
         
+    # 教師データがone-hot-vectorの場合、正解ラベルのインデックスに変換
+    if t.size == y.size:
+        t = t.argmax(axis=1)
+             
     batch_size = y.shape[0]
-    delta = 1e-7
-    return -np.sum(t * np.log(y + delta)) / batch_size
+    return -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
 
 def numerical_gradient(f, x):
     h = 1e-4 # 0.0001
@@ -38,11 +41,13 @@ def numerical_gradient(f, x):
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-def softmax(a):
-    c = np.max(a)
-    exp_a = np.exp(a - c)
-    sum_exp_a = np.sum(exp_a)
-    return exp_a / sum_exp_a
+def sigmoid_grad(x):
+    return (1.0 - sigmoid(x)) * sigmoid(x)
+
+def softmax(x):
+    x = x - np.max(x, axis=-1, keepdims=True)   # オーバーフロー対策
+    return np.exp(x) / np.sum(np.exp(x), axis=-1, keepdims=True)
+
 
 def get_date():
     (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=True, one_hot_label=False)
@@ -112,14 +117,14 @@ class TwoLayerNet:
         grads['b2'] = np.sum(dy, axis=0)
         
         dz1 = np.dot(dy, W2.T)
-        da1 = sigmoid(a1) * dz1
+        da1 = sigmoid_grad(a1) * dz1
         grads['W1'] = np.dot(x.T, da1)
         grads['b1'] = np.sum(da1, axis=0)
 
         return grads
 
 
-(x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
+(x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 
 train_loss_list = []
 
@@ -136,7 +141,7 @@ for i in range(iters_num):
     x_batch = x_train[batch_mask]
     t_batch = t_train[batch_mask]
     
-    grad = network.numerical_gradient(x_batch, t_batch)
+    grad = network.gradient(x_batch, t_batch)
     
     for key in ('W1', 'b1', 'W2', 'b2'):
         network.params[key] -= learning_rate * grad[key]
@@ -147,7 +152,7 @@ for i in range(iters_num):
 # show image
 fig = plt.figure()
 
-plt.plot(iters_num, train_loss_list, label="sin")
+plt.plot(train_loss_list)
 plt.xlabel("iter_num")
 plt.ylabel("loss")
 
