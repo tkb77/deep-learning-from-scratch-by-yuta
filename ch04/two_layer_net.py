@@ -156,6 +156,15 @@ plt.plot(train_loss_list)
 plt.xlabel("iter_num")
 plt.ylabel("loss")
 
-fig.savefig("img.png")
+fig.savefig("train_loss_img.png")
 
 #show epoc image
+
+
+fig = plt.figure()
+
+plt.plot(train_loss_list)
+plt.xlabel("iter_num")
+plt.ylabel("loss")
+
+fig.savefig("epoc_img.png")
