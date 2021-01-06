@@ -127,6 +127,8 @@ class TwoLayerNet:
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 
 train_loss_list = []
+train_acc_list = []
+test_acc_list = []
 
 # hyper prameter
 iters_num = 10000
@@ -157,14 +159,3 @@ plt.xlabel("iter_num")
 plt.ylabel("loss")
 
 fig.savefig("train_loss_img.png")
-
-#show epoc image
-
-
-fig = plt.figure()
-
-plt.plot(train_loss_list)
-plt.xlabel("iter_num")
-plt.ylabel("loss")
-
-fig.savefig("epoc_img.png")
