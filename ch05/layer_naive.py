@@ -14,7 +14,7 @@ class AddLayer:
         return dx, dy
         
 class MulLayer:
-    def __init__(self, x, y):
+    def __init__(self):
         self.x = None
         self.y = None
     
