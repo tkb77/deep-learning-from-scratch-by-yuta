@@ -1,4 +1,6 @@
 # coding: utf-8
+import numpy as np
+
 
 class AddLayer:
     def __init__(self):
@@ -42,4 +44,17 @@ class Relu:
     def backward(self, dout):
         dout[self.mask] = 0
         dx = dout
+        return dx
+
+class Sigmoid:
+    def __init__(self):
+        self.out = None
+    
+    def forward(self, x):
+        out = 1 / (1 + np.exp(-x))
+        self.out = (x <= 0)
+        return out
+    
+    def backward(self, dout):
+        dx = dout * (1.0 - self.out) * self.out
         return dx
