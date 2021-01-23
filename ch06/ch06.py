@@ -24,6 +24,8 @@ iter_per_epoch = max(train_size / batch_size, 1) #600
 input_size=784
 hidden_size=50
 output_size=10
+
+# He initial value
 weight_init_std=np.sqrt(2.0 / (input_size + hidden_size + output_size))
 
 network = TwoLayerNet(input_size, hidden_size, output_size, weight_init_std)
