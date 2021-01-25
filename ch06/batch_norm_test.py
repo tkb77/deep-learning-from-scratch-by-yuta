@@ -59,6 +59,7 @@ def __train(weight_init_std):
 # 3.グラフの描画==========
 weight_scale_list = np.logspace(0, -4, num=16)
 x = np.arange(max_epochs)
+fig = plt.figure()
 
 for i, w in enumerate(weight_scale_list):
     print( "============== " + str(i+1) + "/16" + " ==============")
@@ -84,4 +85,4 @@ for i, w in enumerate(weight_scale_list):
         plt.xlabel("epochs")
     plt.legend(loc='lower right')
     
-plt.show()
+fig.savefig("batch_norm_test.png")
