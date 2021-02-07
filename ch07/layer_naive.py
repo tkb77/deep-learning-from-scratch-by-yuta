@@ -1,7 +1,8 @@
 # coding: utf-8
 import numpy as np
 from functions import *
-
+sys.path.append("/home/ubuntu/workspace/deep-learning-from-scratch")
+from common.util import im2col
 
 class AddLayer:
     def __init__(self):
